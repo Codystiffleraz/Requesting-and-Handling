@@ -10,6 +10,7 @@
 */
 
 // CODE HERE
+const sayHelloButton = document.querySelector('#say-hello-button')
 
 
 // PROBLEM 2
@@ -20,6 +21,12 @@
 */
 
 // CODE HERE
+const changeColor = () => {
+    sayHelloButton.style.backgroundColor = "black"
+    sayHelloButton.style.color = "white"
+   }
+
+sayHelloButton.addEventListener('mouseover', changeColor)
 
 
 // PROBLEM 3
@@ -32,7 +39,12 @@
 */
 
 // CODE HERE
+const changeColorBack = () => {
+    sayHelloButton.style.backgroundColor = "#EFEFEF"
+    sayHelloButton.style.color = "black"
+   }
 
+sayHelloButton.addEventListener('mouseout', changeColorBack)
 
 // PROBLEM 4
 /*
@@ -53,11 +65,11 @@ const sayHello = () => {
 // DO NOT EDIT FUNCTION
 
 // CODE HERE
-
+sayHelloButton.addEventListener('click', sayHello)
 
 // PROBLEM 5 
 /*
-    Now that we have attached a few event listeners why dont we try adding a request? 
+    Now that we have attached a few event listeners why don't we try adding a request? 
     
     Below you will find an event listener on a button. 
     
@@ -66,9 +78,23 @@ const sayHello = () => {
     Handle the promise that's returned with a .then, which you should pass a callback function to. Inside the callback function, console.log the response's data (in the intermediate instructions we'll come back to this function and add HTML).
 */ 
 
-const ohMy = () => {
-    // YOUR CODE HERE
+const ohMy = (event) => {
+    axios.get('http://localhost:3000/animals')
+    .then((res) => {
+        let newArr = res.data
+
+        for(let i = 0; i < newArr.length; i++){
+            let p = document.createElement('p')
+            p.textContent = newArr[i]
+            document.body.appendChild(p)
+      }
+    })
+      .catch((err) => {
+        console.log(err)
+      })
+
 }
+// On each iteration of the loop, create a new p element. Set its textContent equal the string at the current index (i) and then append the new p element onto the document's body. 
 
 document.getElementById('animals-button').addEventListener('click', ohMy)
 
@@ -87,8 +113,21 @@ document.getElementById('animals-button').addEventListener('click', ohMy)
 */
 
 const repeatMyParam = () => {
-    //YOUR CODE HERE
+    axios.get('http://localhost:3000/repeat/hello')
+    .then((res) => {
+        document.getElementById('repeat-text').textContent = (res.data)
+        document.getElementById('repeat-text').style.display = "block"
+        console.log(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    
+    
+
 }
+
+document.getElementById('repeat-button').addEventListener('click', repeatMyParam)
 
 // PROBLEM 7
 /*
@@ -113,7 +152,17 @@ const repeatMyParam = () => {
 */
 
 // CODE HERE
+const query = () => {
+    axios.get('http://localhost:3000/query-test?hello=1')
+    .then((res) => {
+        console.log(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
 
+}
+document.querySelector('#query-button').addEventListener('click', query)
 
 
 ////////////////
@@ -134,8 +183,9 @@ const repeatMyParam = () => {
     In the function that you wrote for Problem 8, change the URL to test a couple different scenarios. 
 
     1: Send no queries on the URL -- what happened? 
-
+    // you sent an empty query!
     2: Send more than 1 query on the URL -- what happened? 
+    //just adds the second query to the value of the first
 */
 
 // Edit code in Problem 8
